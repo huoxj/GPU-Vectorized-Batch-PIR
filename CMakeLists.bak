@@ -1,0 +1,25 @@
+cmake_minimum_required(VERSION 3.0)
+
+set(CMAKE_CUDA_COMPILER /usr/local/cuda-12.6/bin/nvcc)
+set(CMAKE_CXX_COMPILER /usr/bin/clang++)
+
+project(VBPIR LANGUAGES C CXX CUDA)
+
+set(CMAKE_CUDA_ARCHITECTURES 89)
+
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+add_executable(test test.cpp test.cu)
+
+target_include_directories(test PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+
+include(/home/runz/tools/vcpkg/scripts/buildsystems/vcpkg.cmake)
+set(CMAKE_TOOLCAHIN_FILE /home/runz/tools/vcpkg/scripts/buildsystems/vcpkg.cmake)
+
+find_package(SEAL 4.1 REQUIRED)
+
+# TORY nova
+set(TROY_LIB "/home/runz/temp/troy")
+include_directories(${TROY_LIB}/include)
+
+target_link_libraries(test ${TROY_LIB}/lib/libtroy.so SEAL::seal)
