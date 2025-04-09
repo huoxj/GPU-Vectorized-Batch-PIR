@@ -1,33 +1,37 @@
 add_rules("mode.release", "mode.debug")
 
-set_languages("c++17")
+set_languages("c++20")
 
-set_toolchains("clang", "nvcc")
+set_targetdir("build")
 
-set_targetdir("build/bin")
+add_requires("zlib")
+add_requires("vcpkg::seal")
 
 -- 定义目标
-target("vectorized_batch_pir")
+target("vbpir")
     set_kind("binary")
-    add_files("src/*.cpp", "src/*.cu")
-    add_includedirs("header")
-    add_defines("CMAKE_CUDA_ARCHITECTURES=89")
+
+    -- Pir scheme
+    add_files("pir/src/**.cpp", "pir/src/**.cu")
+    add_includedirs("pir/header")
+
+    -- He utils
+    add_files("he_utils/src/**.cpp", "he_utils/src/**.cu")
+    add_includedirs("he_utils/header")
+
+    add_cugencodes("native")
+    set_toolchains("clang")
     
-    -- 指定编译器
-    set_toolchains("clang", "nvcc")
-    
-    -- 设定编译选项
+    -- Flags
     add_cxxflags("-g")
-    add_cuflags("--std=c++17")
+    add_cuflags("--std=c++17", {force=true})
     
-    -- SEAL 库
-    add_packages("seal")
+    -- SEAL
+    add_packages("vcpkg::seal", "zlib")
     
-    -- Troy 库
+    -- Troy
     local troy_dir = "/home/runz/temp/troy"
     add_includedirs(path.join(troy_dir, "include"))
     add_linkdirs(path.join(troy_dir, "lib"))
-    add_links("troy")
-    
-    -- 链接 SEAL
-    add_links("seal")
+    add_links("/home/runz/temp/troy/lib/libtroy.so")
+    add_ldflags("-Wl,-rpath,/home/runz/temp/troy/lib")
