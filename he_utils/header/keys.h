@@ -2,14 +2,18 @@
 
 #include <seal/seal.h>
 #include <troy/troy.h>
+#include "utils.h"
 #include "keygen.h"
 
 class PublicKeys {
+public:
+    static std::unique_ptr<PublicKeys> create(KeyGen &);
+    virtual ~PublicKeys() = default;
 };
 
 class PublicKeysSeal : public PublicKeys {
 public:
-    PublicKeysSeal(std::unique_ptr<KeyGenSeal> &);
+    PublicKeysSeal(KeyGenSeal &);
     seal::GaloisKeys & getGaloisKeys();
     seal::RelinKeys & getRelinKeys();
 private:
@@ -19,7 +23,7 @@ private:
 
 class PublicKeysTroy : public PublicKeys {
 public:
-    PublicKeysTroy(std::unique_ptr<KeyGenTroy> &);
+    PublicKeysTroy(KeyGenTroy &);
     troy::GaloisKeys & getGaloisKeys();
     troy::RelinKeys & getRelinKeys();
 private:
@@ -28,11 +32,14 @@ private:
 };
 
 class SecretKeys {
+public:
+    static std::unique_ptr<SecretKeys> create(KeyGen &);
+    virtual ~SecretKeys() = default;
 };
 
 class SecretKeysSeal : public SecretKeys {
 public:
-    SecretKeysSeal(std::unique_ptr<KeyGenSeal> &);
+    SecretKeysSeal(KeyGenSeal &);
     seal::SecretKey & getSecretKey();
 private:
     seal::SecretKey secret_key;
@@ -40,7 +47,7 @@ private:
 
 class SecretKeysTroy : public SecretKeys {
 public:
-    SecretKeysTroy(std::unique_ptr<KeyGenTroy> &);
+    SecretKeysTroy(KeyGenTroy &);
     troy::SecretKey & getSecretKey();
 private:
     troy::SecretKey secret_key;

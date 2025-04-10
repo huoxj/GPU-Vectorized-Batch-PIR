@@ -1,5 +1,17 @@
 #include "encryption_params.h"
 
+std::unique_ptr<EncryptionParameters> EncryptionParameters::create()
+{
+    switch (HeLib::lib_type) {
+    case SEAL:
+        return std::make_unique<EncryptionParametersSeal>();
+    case TROY:
+        return std::make_unique<EncryptionParametersTroy>();
+    default:
+        throw std::runtime_error("Invalid HeLib type");
+    }
+}
+
 /*
  * Constructor
  */
@@ -58,12 +70,12 @@ void EncryptionParametersTroy::setParameters(
  * Get Raw
  */
 
-std::unique_ptr<seal::EncryptionParameters> & EncryptionParametersSeal::get_raw()
+seal::EncryptionParameters & EncryptionParametersSeal::get_raw()
 {
-    return ep;
+    return *ep;
 }
 
-std::unique_ptr<troy::EncryptionParameters> & EncryptionParametersTroy::get_raw()
+troy::EncryptionParameters & EncryptionParametersTroy::get_raw()
 {
-    return ep;
+    return *ep;
 }

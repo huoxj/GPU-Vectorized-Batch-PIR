@@ -1,17 +1,33 @@
 #include "keygen.h"
 
-KeyGenSeal::KeyGenSeal(std::unique_ptr<HeContextSeal> &context) {
-    keygen = std::make_unique<seal::KeyGenerator>(*context->getRaw());
+std::unique_ptr<KeyGen> KeyGen::create(HeContext &context)
+{
+    switch (HeLib::lib_type) {
+    case SEAL:
+        return std::make_unique<KeyGenSeal>(
+            dynamic_cast<HeContextSeal &>(context)
+        );
+    case TROY:
+        return std::make_unique<KeyGenTroy>(
+            dynamic_cast<HeContextTroy &>(context)
+        );
+    default:
+        throw std::runtime_error("Invalid HE library type");
+    }
 }
 
-std::unique_ptr<seal::KeyGenerator> & KeyGenSeal::getRaw() {
-    return keygen;
+KeyGenSeal::KeyGenSeal(HeContextSeal &context) {
+    keygen = std::make_unique<seal::KeyGenerator>(context.get_raw());
 }
 
-KeyGenTroy::KeyGenTroy(std::unique_ptr<HeContextTroy> &context) {
-    keygen = std::make_unique<troy::KeyGenerator>(context->getRaw());
+seal::KeyGenerator & KeyGenSeal::get_raw() {
+    return *keygen;
 }
 
-std::unique_ptr<troy::KeyGenerator> & KeyGenTroy::getRaw() {
-    return keygen;
+KeyGenTroy::KeyGenTroy(HeContextTroy &context) {
+    keygen = std::make_unique<troy::KeyGenerator>(context.get_raw());
+}
+
+troy::KeyGenerator & KeyGenTroy::get_raw() {
+    return *keygen;
 }
