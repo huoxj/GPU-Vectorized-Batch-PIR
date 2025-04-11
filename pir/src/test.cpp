@@ -1,9 +1,14 @@
 #include "pirParams.h"
 #include "mockClient.h"
 #include "server.h"
+#include "utils.h"
+// #include "myhe.h"
 #include <iostream>
 
 using namespace troy; 
+
+// auto HeLib::lib_type = HeLibType::TROY;
+
 
 int main() {
 
@@ -23,7 +28,7 @@ int main() {
     server.client_disconnet();
 
     auto decrypted_pt = client.decrypt_ciphertext(response);
-    
+
     for (int i = 0; i < decrypted_pt.size(); i++) {
         if (decrypted_pt[i] == 0) continue;
         std::cout << decrypted_pt[i] << " ";

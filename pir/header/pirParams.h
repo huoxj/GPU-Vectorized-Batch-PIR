@@ -23,7 +23,7 @@ public:
 
         encryption_params.set_plain_modulus(PlainModulus::batching(poly_modulus_degree, 20));
 
-        dimensions = {1024, 1024, 60};
+        dimensions = {128, 128, 64};
         num_entries = 1;
         std::for_each(dimensions.begin(), dimensions.end(), [this](size_t dim) {
             num_entries *= dim;

@@ -15,6 +15,7 @@ public:
 
 class CiphertextSeal: public Ciphertext {
 public:
+    CiphertextSeal();
     seal::Ciphertext & get_raw();
 private:
     std::unique_ptr<seal::Ciphertext> cipher;
@@ -22,6 +23,7 @@ private:
 
 class CiphertextTroy: public Ciphertext {
 public:
+    CiphertextTroy();
     troy::Ciphertext & get_raw();
 private:
     std::unique_ptr<troy::Ciphertext> cipher;

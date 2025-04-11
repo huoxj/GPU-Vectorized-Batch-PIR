@@ -8,7 +8,7 @@
 class KeyGen {
 public:
     static std::unique_ptr<KeyGen> create(HeContext &context);
-    virtual ~KeyGen() = 0;
+    virtual ~KeyGen() = default;
 };
 
 class KeyGenSeal : public KeyGen {

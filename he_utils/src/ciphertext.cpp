@@ -15,6 +15,11 @@ std::unique_ptr<Ciphertext> Ciphertext::create() {
 // CiphertextSeal
 // ==========================
 
+CiphertextSeal::CiphertextSeal()
+{
+    cipher = std::make_unique<seal::Ciphertext>();
+}
+
 seal::Ciphertext & CiphertextSeal::get_raw() {
     return *cipher;
 }
@@ -23,6 +28,11 @@ seal::Ciphertext & CiphertextSeal::get_raw() {
 // ==========================
 // CiphertextTroy
 // ==========================
+
+CiphertextTroy::CiphertextTroy()
+{
+    cipher = std::make_unique<troy::Ciphertext>();
+}
 
 troy::Ciphertext & CiphertextTroy::get_raw() {
     return *cipher;
