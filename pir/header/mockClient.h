@@ -3,30 +3,26 @@
 #include<vector>
 
 #include"pirParams.h"
+#include "utils.h"
 
 using std::vector;
-using namespace troy;
 
 class MockClient {
 public:
     MockClient(PirParams &);
 
-    vector<Ciphertext> query_generation(size_t);
+    vector<std::unique_ptr<Ciphertext>> query_generation(size_t);
 
-    vector<uint64_t> decrypt_ciphertext(Ciphertext ct);
+    vector<uint64_t> decrypt_ciphertext(Ciphertext &ct);
 
-    PublicKey & get_public_key();
-    GaloisKeys & get_galois_key();
-    RelinKeys & get_relin_key();
+    PublicKeys *get_public_keys();
 
 private:
 
     PirParams &pirparams;
-    std::shared_ptr<HeContext> context;
-    std::shared_ptr<BatchEncoder> encoder;
-    std::shared_ptr<KeyGenerator> keygen;
-    PublicKey public_key;
-    SecretKey secret_key;
-    GaloisKeys galois_key;
-    RelinKeys relin_key;
+    std::unique_ptr<HeContext> context;
+    std::unique_ptr<Encoder> encoder;
+    std::unique_ptr<KeyGen> keygen;
+    std::unique_ptr<PublicKeys> public_keys;
+    std::unique_ptr<SecretKeys> secret_keys;
 };

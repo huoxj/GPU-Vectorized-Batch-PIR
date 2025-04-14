@@ -2,9 +2,8 @@
 
 #include <vector>
 #include <algorithm>
-#include "troy/troy.h"
+#include "myhe.h"
 
-using namespace troy;
 using std::vector;
 
 class PirParams {
@@ -14,23 +13,18 @@ public:
         poly_modulus_degree(poly_modulus_degree),
         batchsize(batchsize)
     {
-        encryption_params = EncryptionParameters(SchemeType::BFV);
-        encryption_params.set_poly_modulus_degree(poly_modulus_degree);
-        encryption_params.set_coeff_modulus(CoeffModulus::bfv_default(
-                poly_modulus_degree,
-                SecurityLevel::Classical128
-        ));
-
-        encryption_params.set_plain_modulus(PlainModulus::batching(poly_modulus_degree, 20));
+        encryption_params = EncryptionParameters::create();
+        encryption_params->setParameters(poly_modulus_degree, 20);
 
         dimensions = {128, 128, 64};
+        // dimensions = {32, 32, 5};
         num_entries = 1;
         std::for_each(dimensions.begin(), dimensions.end(), [this](size_t dim) {
             num_entries *= dim;
         });
     }
 
-    EncryptionParameters encryption_params;
+    std::unique_ptr<EncryptionParameters> encryption_params;
 
     size_t batchsize;
     vector<size_t> dimensions;

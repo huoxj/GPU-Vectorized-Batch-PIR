@@ -2,13 +2,10 @@
 #include "mockClient.h"
 #include "server.h"
 #include "utils.h"
-// #include "myhe.h"
+#include "myhe.h"
 #include <iostream>
 
-using namespace troy; 
-
-// auto HeLib::lib_type = HeLibType::TROY;
-
+auto HeLib::lib_type = HeLibType::SEAL;
 
 int main() {
 
@@ -19,15 +16,14 @@ int main() {
 
     server.client_connect(client);
 
-    size_t query_idx = 114514;
+    size_t query_idx = 0;
     auto query = client.query_generation(query_idx);
-    Ciphertext response;
 
-    server.generate_response_serialized(query, response);
+    auto response = server.generate_response_serialized(query);
 
     server.client_disconnet();
 
-    auto decrypted_pt = client.decrypt_ciphertext(response);
+    auto decrypted_pt = client.decrypt_ciphertext(*response);
 
     for (int i = 0; i < decrypted_pt.size(); i++) {
         if (decrypted_pt[i] == 0) continue;

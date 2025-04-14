@@ -16,14 +16,14 @@ target("vbpir")
     add_includedirs("pir/header")
 
     -- He utils
-    -- add_files("he_utils/src/**.cpp", "he_utils/src/**.cu")
-    -- add_includedirs("he_utils/header")
+    add_files("he_utils/src/**.cpp", "he_utils/src/**.cu")
+    add_includedirs("he_utils/header")
 
     add_cugencodes("native")
     set_toolchains("clang")
     
     -- Flags
-    add_cxxflags("-g")
+    add_cxxflags("-g -O0")
     add_cuflags("--std=c++17", {force=true})
     
     -- SEAL

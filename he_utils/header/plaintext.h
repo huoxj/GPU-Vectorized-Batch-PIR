@@ -7,12 +7,13 @@
 class Plaintext {
 public:
     static std::unique_ptr<Plaintext> create();
-    virtual ~Plaintext() = default;
+    virtual std::unique_ptr<Plaintext> clone() const = 0;
 };
 
 class PlaintextSeal : public Plaintext {
 public:
     PlaintextSeal();
+    std::unique_ptr<Plaintext> clone() const override;
     seal::Plaintext & get_raw();
 private:
     std::unique_ptr<seal::Plaintext> plain;
@@ -21,6 +22,7 @@ private:
 class PlaintextTroy : public Plaintext {
 public:
     PlaintextTroy();
+    std::unique_ptr<Plaintext> clone() const override;
     troy::Plaintext & get_raw();
 private:
     std::unique_ptr<troy::Plaintext> plain;

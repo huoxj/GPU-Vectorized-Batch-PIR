@@ -21,6 +21,15 @@ PlaintextSeal::PlaintextSeal()
     plain = std::make_unique<seal::Plaintext>();
 }
 
+std::unique_ptr<Plaintext> PlaintextSeal::clone() const
+{
+    auto clone = std::make_unique<PlaintextSeal>();
+
+    clone->plain = std::make_unique<seal::Plaintext>(*plain);
+
+    return clone;
+}
+
 seal::Plaintext & PlaintextSeal::get_raw()
 {
     return *plain;
@@ -33,6 +42,15 @@ seal::Plaintext & PlaintextSeal::get_raw()
 PlaintextTroy::PlaintextTroy()
 {
     plain = std::make_unique<troy::Plaintext>();
+}
+
+std::unique_ptr<Plaintext> PlaintextTroy::clone() const
+{
+    auto clone = std::make_unique<PlaintextTroy>();
+
+    clone->plain = std::make_unique<troy::Plaintext>(*plain);
+
+    return clone;
 }
 
 troy::Plaintext & PlaintextTroy::get_raw()
