@@ -19,6 +19,10 @@ target("vbpir")
     add_files("he_utils/src/**.cpp", "he_utils/src/**.cu")
     add_includedirs("he_utils/header")
 
+    -- Batch utils
+    add_files("batch_utils/**.cpp")
+    add_includedirs("batch_utils")
+
     add_cugencodes("native")
     set_toolchains("clang")
     
